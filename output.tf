@@ -7,7 +7,7 @@ locals {
 }
 
 
-output "that_web" {
+output "that_web_each" {
   value = <<-EOT
   [
   %{for i in local.output_web~}

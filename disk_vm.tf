@@ -1,12 +1,14 @@
 resource "yandex_compute_disk" "storage_disk" {
   count = var.disk_count
+  name  = "storage-disk-${count.index}"
   size  = 1
 }
 
 resource "yandex_compute_instance" "storage" {
-  count = 1
-  name  = "storage"
-  zone  = var.default_zone
+  count                     = 1
+  name                      = "storage"
+  zone                      = var.default_zone
+  allow_stopping_for_update = true
 
   resources { # т.к. требований к ресурсам нет переиспользовал их из 2.1
     cores         = var.web_vm.cpu
@@ -22,9 +24,9 @@ resource "yandex_compute_instance" "storage" {
   }
 
   dynamic "secondary_disk" {
-    for_each = yandex_compute_disk.storage_disk.*.id
+    for_each = { for i in yandex_compute_disk.storage_disk : i.name => i }
     content {
-      disk_id = yandex_compute_disk.storage_disk["${secondary_disk.key}"].id
+      disk_id = secondary_disk.value.id
     }
   }
 

@@ -36,12 +36,6 @@ variable "vm_web_count" {
   description = "web VMs count"
 }
 
-variable "each_vm_count" {
-  type        = tuple([string, string])
-  default     = ["main", "replica"]
-  description = "each VMs count"
-}
-
 variable "wm_web_img" {
   type    = string
   default = "ubuntu-2404-lts-oslogin"
@@ -75,6 +69,12 @@ variable "web_vm" {
 
 #--------------------each VMs-----------------------
 
+variable "each_vm_count" {
+  type        = tuple([string, string])
+  default     = ["main", "replica"]
+  description = "each VMs count"
+}
+
 variable "each_vm" {
   type = list(object({
     cpu           = number
@@ -94,7 +94,7 @@ variable "each_vm" {
     {
       cpu           = 2
       memory        = 2
-      core_fraction = 5
+      core_fraction = 20
       hdd_type      = "network-hdd"
       hdd_size      = 10
     }

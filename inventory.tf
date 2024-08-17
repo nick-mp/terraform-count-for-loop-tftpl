@@ -22,6 +22,8 @@ resource "local_file" "hosts_for" {
   ${i["name"]}   ansible_host=${i["network_interface"][0]["nat_ip_address"]}    fqdn=${i["fqdn"]}
   %{endfor}
   %{endif}
+  [storage]
+  ${join("", "${yandex_compute_instance.storage.*.name}")}  ansible_host=${join("", "${yandex_compute_instance.storage.*.network_interface.0.nat_ip_address}")} fqdn=${join("", "${yandex_compute_instance.storage.*.fqdn}")}
   EOT
   filename = "${abspath(path.module)}/for.ini"
 }

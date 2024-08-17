@@ -1,7 +1,8 @@
 resource "yandex_compute_instance" "each_vms" {
-  for_each = toset(var.each_vm_count)
-  name     = "gnn-${each.key}"
-  zone     = var.default_zone
+  for_each                  = toset(var.each_vm_count)
+  name                      = "gnn-${each.key}"
+  zone                      = var.default_zone
+  allow_stopping_for_update = true
 
   resources {
     cores         = "${each.value}" == "main" ? var.each_vm.0.cpu : var.each_vm.1.cpu
